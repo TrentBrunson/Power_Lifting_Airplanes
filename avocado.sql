@@ -63,3 +63,20 @@ SELECT TOP 5 SalesRegion, SalesYear, AveragePrice
 SELECT TOP 1 SalesDate, AveragePrice, Total_Volume, SalesType, SalesRegion
   FROM AvocadoSales
   ORDER BY AveragePrice DESC;
+
+
+-- List the average price (remember column name = AveragePrice), sale date, and total volume for all records
+
+-- List the unique sales regions in the Avocado data set
+
+-- List the unique sales types in the data set sort the results alphabetically
+
+-- List the average price, total bags, type, sales year for all sales in the Denver region with no extra-large bag sales (e.g., Xlarge_Bags = ‘0’ (zero)) 
+
+-- List the region, sales year, and average price for the 15 lowest average price records
+
+-- List all data for records with average price greater than or equal to 3.00
+
+-- What are the five lowest average prices?
+
+-- What market region has the highest average price for avocados? Your response should only list one record and should include sale date, average price, total volume, sales type, and region. (HINT: Do not use summary queries!)

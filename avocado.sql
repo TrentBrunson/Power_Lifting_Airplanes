@@ -66,9 +66,15 @@ SELECT TOP 1 SalesDate, AveragePrice, Total_Volume, SalesType, SalesRegion
 
 
 -- List the average price (remember column name = AveragePrice), sale date, and total volume for all records
+SELECT 
+  AveragePrice,
+  SalesDate,
+  Total_Volume
+  FROM Avocado;
 
 -- List the unique sales regions in the Avocado data set
-
+SELECT DISTINCT SalesRegion
+FROM avocado;
 -- List the unique sales types in the data set sort the results alphabetically
 
 -- List the average price, total bags, type, sales year for all sales in the Denver region with no extra-large bag sales (e.g., Xlarge_Bags = ‘0’ (zero)) 

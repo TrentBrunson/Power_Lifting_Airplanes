@@ -38,3 +38,33 @@ SELECT DISTINCT Place
   FROM lifters
   ORDER BY 1;
   -- cast this as integer???
+SELECT COUNT(l.Sex)
+  FROM lifters l JOIN meets m
+    ON l.MeetID = m.MeetID
+  WHERE l.Sex = 'F' AND m.MeetTown = 'Toronto';
+
+SELECT count(l.LifterName)
+  FROM lifters l JOIN meets m
+    ON l.MeetID = m.MeetID
+  HAVING COUNT(m.MeetCountry) > 1 
+  ;
+SELECT * FROM lifters
+
+SELECT l.LifterName
+  FROM lifters l JOIN meets m
+    ON l.MeetID = m.MeetID
+  GROUP BY l.LifterName
+  HAVING COUNT(m.MeetCountry) > 1 
+  ;
+SELECT SUM(t.count)
+FROM(
+  SELECT count(l.LifterName) as count
+    FROM lifters l JOIN meets m
+      ON l.MeetID = m.MeetID
+    GROUP BY l.LifterName
+    HAVING COUNT(m.MeetCountry) > 1) as t
+  ;
+
+SELECT TOP 1 LifterName 
+FROM lifters
+ORDER BY Age DESC;

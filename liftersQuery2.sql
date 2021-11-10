@@ -65,6 +65,6 @@ FROM(
     HAVING COUNT(m.MeetCountry) > 1) as t
   ;
 
-SELECT TOP 1 LifterName 
+SELECT TOP 1 LifterName, Age 
 FROM lifters
 ORDER BY Age DESC;

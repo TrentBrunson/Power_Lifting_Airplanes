@@ -4,6 +4,10 @@
 SELECT * FROM Basic_Stats
 WHERE College = 'No College';
 
+SELECT COUNT(College)
+  FROM Basic_Stats
+  WHERE College = 'No College';
+
 SELECT DISTINCT bs.[Player Name], bs.[Weight in lbs]
   FROM Basic_Stats bs JOIN Career_Stats_Defensive CS
   ON bs.[Player Id] = cs.[Player Id]
@@ -110,6 +114,29 @@ SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Pla
   ON bs.[Player Id] = cs.[Player Id]
   ORDER BY bs.[Player Name] DESC;
 
+-- redo this by group by name without passes defended
+SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Place], [Current Team]
+  FROM Basic_Stats bs JOIN Career_Stats_Defensive cs
+  ON bs.[Player Id] = cs.[Player Id]
+  ORDER BY bs.[Player Name] DESC;
+  
+  -- now sum the passes defended
+  SELECT 
+    cs.[Player Id],
+	cs.[Player Name],
+	[Height in inches],
+	[Birth Place],
+	[Current Team],
+	SUM(Try_Cast([Passes Defended] as int)) Passes_Defended
+  FROM 
+    Career_Stats_Defensive cs JOIN Basic_Stats bs
+	  ON cs.[Player Id] = bs.[Player Id]
+  GROUP BY
+	cs.[Player Id], cs.[Player Name], [Height in inches], [Birth Place], [Current Team]
+  ORDER BY
+    Passes_Defended DESC;
+
+
 SELECT DISTINCT B.[Player Name], B.[Weight in lbs], [Ints for TDs]
 FROM Basic_Stats B, Career_Stats_Defensive C
 WHERE  B.[Player Id] = C.[Player Id] and B.[Weight in lbs] > 280 and C.[Ints for TDs] >= '1';
@@ -117,3 +144,16 @@ WHERE  B.[Player Id] = C.[Player Id] and B.[Weight in lbs] > 280 and C.[Ints for
 SELECT [Player Name],College,[Years Played],Experience
 FROM Basic_Stats
 WHERE Experience > '3';
+
+SELECT temp.[Player Name], College, temp.[Years Played] FROM
+(SELECT cs.[Player Name], bs.College, bs.[Years Played], COUNT(cs.Season) as SeasonCount
+FROM Career_Stats_Defensive AS cs INNER JOIN Basic_Stats as bs
+ON cs.[Player Id] = bs.[Player Id]
+
+GROUP BY cs.[Player Name], bs.College, bs.[Years Played]
+HAVING COUNT(cs.Season) >= 3) as temp
+
+ SELECT C.[Player Id],C.[Player Name],B.Number 
+  FROM Basic_Stats B JOIN Career_Stats_Defensive C
+  ON B.[Player Id] = C.[Player Id] 
+  WHERE B.[Current Status] = 'Retired' and C.[Solo Tackles] > '80';

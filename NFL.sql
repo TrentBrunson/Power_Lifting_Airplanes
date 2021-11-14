@@ -98,19 +98,21 @@ SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Pla
   ORDER BY cs.[Player Id] DESC
   --ORDER BY cs.[Passes Defended] DESC;;
 
-
-SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Place], [Current Team], Try_Cast(cs.[Passes Defended] as int) as [Passes Defended]
---, COUNT()
+-- Working
+SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Place], [Current Team], Try_Cast([Passes Defended] as int) as [Passes Defended]
   FROM Basic_Stats bs JOIN Career_Stats_Defensive cs
   ON bs.[Player Id] = cs.[Player Id]
-  -- GROUP BY cs.[Player Id]
-  ORDER BY cs.[Passes Defended] DESC;
+  ORDER BY [Passes Defended] DESC;
 
+  -- order by name
+SELECT DISTINCT cs.[Player Id], bs.[Player Name], [Height in inches], [Birth Place], [Current Team], Try_Cast([Passes Defended] as int) as [Passes Defended]
+  FROM Basic_Stats bs JOIN Career_Stats_Defensive cs
+  ON bs.[Player Id] = cs.[Player Id]
+  ORDER BY bs.[Player Name] DESC;
 
-
-SELECT DISTINCT B.[Player Name], B.[Weight in lbs]
+SELECT DISTINCT B.[Player Name], B.[Weight in lbs], [Ints for TDs]
 FROM Basic_Stats B, Career_Stats_Defensive C
-WHERE  B.[Player Id] = C.[Player Id] and B.[Weight in lbs] > 250 and C.[Ints for TDs] > '1';
+WHERE  B.[Player Id] = C.[Player Id] and B.[Weight in lbs] > 280 and C.[Ints for TDs] >= '1';
 
 SELECT [Player Name],College,[Years Played],Experience
 FROM Basic_Stats

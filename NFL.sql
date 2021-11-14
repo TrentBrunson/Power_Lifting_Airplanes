@@ -149,11 +149,15 @@ SELECT temp.[Player Name], College, temp.[Years Played] FROM
 (SELECT cs.[Player Name], bs.College, bs.[Years Played], COUNT(cs.Season) as SeasonCount
 FROM Career_Stats_Defensive AS cs INNER JOIN Basic_Stats as bs
 ON cs.[Player Id] = bs.[Player Id]
-
 GROUP BY cs.[Player Name], bs.College, bs.[Years Played]
 HAVING COUNT(cs.Season) >= 3) as temp
 
  SELECT C.[Player Id],C.[Player Name],B.Number 
+  FROM Basic_Stats B JOIN Career_Stats_Defensive C
+  ON B.[Player Id] = C.[Player Id] 
+  WHERE B.[Current Status] = 'Retired' and C.[Solo Tackles] > '80';
+
+  SELECT C.[Player Id],C.[Player Name],B.Number 
   FROM Basic_Stats B JOIN Career_Stats_Defensive C
   ON B.[Player Id] = C.[Player Id] 
   WHERE B.[Current Status] = 'Retired' and C.[Solo Tackles] > '80';

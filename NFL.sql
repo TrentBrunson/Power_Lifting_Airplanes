@@ -13,6 +13,11 @@ SELECT DISTINCT bs.[Player Name], bs.[Weight in lbs]
   ON bs.[Player Id] = cs.[Player Id]
   WHERE bs.[Weight in lbs] >= 250 AND cs.[Ints for TDs] >= '1';
 
+  -- ****************************
+SELECT DISTINCT bs.[Player Name], bs.[Weight in lbs] 
+FROM [Basic_Stats] bs, [Career_Stats_Defensive] cs
+WHERE  bs.[Player Id] = cs.[Player Id] and bs.[Weight in lbs] > 250 and cs.[Ints for TDs] > '1';
+
 -- good one:
 SELECT COUNT(DISTINCT cs.[Player Name])
   FROM Basic_Stats bs JOIN Career_Stats_Defensive CS
@@ -161,3 +166,26 @@ HAVING COUNT(cs.Season) >= 3) as temp
   FROM Basic_Stats B JOIN Career_Stats_Defensive C
   ON B.[Player Id] = C.[Player Id] 
   WHERE B.[Current Status] = 'Retired' and C.[Solo Tackles] > '80';
+
+SELECT DISTINCT(c.[Player Name]), b.Birthday, c.[Ints for TDs]
+  FROM Basic_Stats b JOIN Career_Stats_Defensive c
+	ON b.[Player Id] = c.[Player Id]
+  WHERE MONTH(b.Birthday) = 02
+  GROUP BY b.Birthday, c.[Player Name], c.[Ints for TDs]
+  HAVING TRY_CAST(c.[Ints for TDs] as INT) >= 2;
+
+SELECT MAX(t.c) [# players]
+  FROM 
+	(SELECT DISTINCT ([Current Team]), COUNT([Player Name]) c
+	  FROM Basic_Stats
+	  WHERE [Current Team] <> ''
+	  GROUP BY [Current Team] --ORDER BY c DESC
+	  ) t;
+-- how to add team name to this query; next one doesn't handle ties
+
+SELECT DISTINCT TOP 1 ([Current Team]), COUNT([Player Name]) c
+	FROM Basic_Stats
+	WHERE [Current Team] <> ''
+	GROUP BY [Current Team] 
+	ORDER BY c DESC;
+

@@ -181,7 +181,23 @@ SELECT MAX(t.c) [# players]
 	  WHERE [Current Team] <> ''
 	  GROUP BY [Current Team] --ORDER BY c DESC
 	  ) t;
--- how to add team name to this query; next one doesn't handle ties
+
+SELECT [Current Team], COUNT([Current Team]) [# of players]
+  FROM Basic_Stats
+  GROUP BY [Current Team]
+  HAVING COUNT([Current Team]) = ( 
+		-- set condition to only return the max value from the sub-query
+		-- this limits the select values for current team to be the one with the most
+	SELECT MAX(total)  -- get the maximum value from the inner query
+	  FROM 
+	    ( -- get number of players on teams
+		SELECT [Current Team], COUNT([Player Id]) total
+		  FROM Basic_Stats
+		  WHERE [Current Team] <> ''
+		  GROUP BY [Current Team]) t);
+
+
+-- how to add team name to this query??? next one doesn't handle ties
 
 SELECT DISTINCT TOP 1 ([Current Team]), COUNT([Player Name]) c
 	FROM Basic_Stats
@@ -189,3 +205,73 @@ SELECT DISTINCT TOP 1 ([Current Team]), COUNT([Player Name]) c
 	GROUP BY [Current Team] 
 	ORDER BY c DESC;
 
+-- How many  player has a Active status in the team?
+SELECT COUNT([Player Id])
+  FROM Basic_Stats
+  WHERE [Current Status] = 'Active';
+
+SELECT * FROM Basic_Stats;
+SELECT * FROM Career_Stats_Defensive;
+
+SELECT Team,
+  SUM(CAST([Games Played] as int)) as 'Total Games Played'
+  FROM Career_Stats_Defensive
+  GROUP BY [Games Played], Team;
+
+SELECT [Games Played], Team
+ FROM Career_Stats_Defensive
+ ORDER BY Team
+
+SELECT COUNT(
+  DISTINCT Team)
+  FROM Career_Stats_Defensive
+
+SELECT DISTINCT Team
+  FROM Career_Stats_Defensive
+  Order by Team;
+
+SELECT 
+  SUM(CAST([Games Played] as int)) 'Games Played'
+  FROM Career_Stats_Defensive
+  GROUP BY Team, [Games Played]
+  order by Team, [Games Played];
+
+SELECT Team,
+  SUM(CAST([Games Played] as int)) 'Games Played'
+  FROM Career_Stats_Defensive
+  GROUP BY Team
+  order by Team;
+
+-- List Player Name whose current status is "Active" and their Playing Position is "OLB".
+SELECT [Player Name], Position
+  FROM Basic_Stats
+  WHERE [Current Status] = 'Active' AND Position = 'OLB';
+
+-- How many players attended college at Texas A&M?
+
+SELECT COUNT([Player Id])
+  FROM Basic_Stats
+  WHERE College = 'Texas A&M';
+
+-- List player names with a current status as "Active", have played for greater than 3 seasons?
+SELECT DISTINCT c.[Player Name],
+	COUNT(Season) [# of Seasons]
+  FROM Career_Stats_Defensive c JOIN Basic_Stats b
+    ON c.[Player Id] = b.[Player Id]
+  WHERE [Current Status] = 'Active'
+  GROUP BY c.[Player Name]
+  HAVING COUNT(Season) >= 3
+  ORDER BY [# of Seasons] DESC;
+
+SELECT COUNT(DISTINCT Season)
+  FROM Career_Stats_Defensive;
+
+SELECT DISTINCT Season
+  FROM Career_Stats_Defensive;
+
+SELECT COUNT([Player Id])
+  FROM Basic_Stats
+  WHERE [Current Status] = 'Active';
+
+SELECT COUNT(DISTINCT Season)
+  FROM Career_Stats_Defensive;

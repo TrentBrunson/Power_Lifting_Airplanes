@@ -275,3 +275,53 @@ SELECT COUNT([Player Id])
 
 SELECT COUNT(DISTINCT Season)
   FROM Career_Stats_Defensive;
+
+-- Chirag
+SELECT  COUNT([Player Id]) TOTAL, [Current Team]
+FROM Basic_Stats
+WHERE [Current Team] <> ''
+GROUP BY [Current Team]
+ORDER BY TOTAL DESC;
+
+SELECT C.[Player Name], COUNT(C.[Ints for TDs]) AS TDS
+FROM Basic_Stats B JOIN Career_Stats_Defensive C
+ON B.[Player Id] = C.[Player Id]
+WHERE MONTH(B.Birthday) = 02
+GROUP BY C.[Player Name], C.[Ints for TDs]
+HAVING COUNT([Ints for TDs]) >= 2
+ORDER BY COUNT(C.[Ints for TDs]) DESC;
+
+SELECT BS.[Player Id],
+BS.[Player Name], 
+MONTH(BS.[Birthday]) AS Birth_Month,
+COUNT(CS.[Ints for TDs]) AS Count_TDS
+FROM [Basic_Stats] AS BS INNER JOIN  [Career_Stats_Defensive] AS CS 
+ON BS.[Player Id] = CS.[Player Id]
+WHERE MONTH(BS.[Birthday]) = 2
+GROUP BY BS.[Player Id],BS.[Player Name], MONTH(BS.[Birthday]), CS.[Ints for TDs]
+HAVING TRY_CAST(CS.[Ints for TDs] as INT) >= 2
+ORDER BY COUNT(CS.[Ints for TDs]) DESC
+
+SELECT c.[Player Name], b.Birthday, c.[Ints for TDs]
+  FROM Basic_Stats b JOIN Career_Stats_Defensive c
+	ON b.[Player Id] = c.[Player Id]
+  WHERE MONTH(b.Birthday) = 02
+  GROUP BY  c.[Ints for TDs], b.Birthday, c.[Player Name]
+  HAVING TRY_CAST(c.[Ints for TDs] as INT) >= 2;
+
+
+SELECT BS.[Player Id],
+BS.[Player Name], CS.[Ints for TDs]
+-- MONTH(BS.[Birthday]) AS Birth_Month,
+-- COUNT(CS.[Ints for TDs]) AS Count_TDS
+FROM [Basic_Stats] AS BS INNER JOIN  [Career_Stats_Defensive] AS CS 
+ON BS.[Player Id] = CS.[Player Id]
+WHERE CS.[Player Id] = 'freddean/2512680'
+GROUP BY BS.[Player Id],BS.[Player Name], MONTH(BS.[Birthday])
+
+
+SELECT TOP 1 WITH TIES([Current Team]), COUNT([Player Name]) [# players]
+    FROM [Basic_Stats]
+    WHERE [Current Team] <> ''
+    GROUP BY [Current Team] 
+    ORDER BY [# players] DESC;

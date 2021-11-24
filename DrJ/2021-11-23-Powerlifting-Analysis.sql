@@ -8,7 +8,7 @@ FROM lifters;
 --	CREATE ANALYSIS COPY OF DATA
 SELECT *
 INTO lifters_analysis
-FROM lifters;
+FROM lifters1; -- correcting for my previous corrections; using the bad data types from ex
 
 SELECT COUNT(*)
 FROM lifters_analysis;
@@ -161,7 +161,7 @@ SELECT	M.MeetID,
 		M.MeetTown,
 		L.LifterName,
 		l.Clean_BodyWeight,
-		L.Clean_WeightClass,
+		--L.Clean_WeightClass,
 		L.BestSquatKg,
 		L.BestBenchKg,
 		L.BestDeadliftKg,
